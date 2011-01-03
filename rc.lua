@@ -10,6 +10,9 @@ require("naughty")
 -- Load Debian menu entries
 require("debian.menu")
 
+-- Teardrop terminal
+require("lib/teardrop")
+
 -- {{{ Variable definitions
 -- Themes define colours, icons, and wallpapers
 beautiful.init("/usr/share/awesome/themes/default/theme.lua")
@@ -219,6 +222,12 @@ globalkeys = awful.util.table.join(
                   mypromptbox[mouse.screen].widget,
                   awful.util.eval, nil,
                   awful.util.getdir("cache") .. "/history_eval")
+              end),
+
+    -- teardrop
+    awful.key({ modkey }, "`",
+              function ()
+                  teardrop(terminal, "top", "middle", .8, .4, true, 1)
               end)
 )
 
