@@ -29,9 +29,10 @@ obvious.popup_run_prompt.set_border_width( 1 )
 beautiful.init("/home/mklich/.config/awesome/themes/default/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
-terminal = "x-terminal-emulator"
-editor = os.getenv("EDITOR") or "editor"
+terminal = "rxvt"
+editor = os.getenv("EDITOR") or "vim"
 editor_cmd = terminal .. " -e " .. editor
+lockscreen = os.getenv("HOME") .. "/bin/lockscreen"
 
 -- Default modkey.
 -- Usually, Mod4 is the key with a logo between Control and Alt.
@@ -45,16 +46,12 @@ layouts =
 {
     awful.layout.suit.floating,
     awful.layout.suit.tile,
-    awful.layout.suit.tile.left,
     awful.layout.suit.tile.bottom,
-    awful.layout.suit.tile.top,
     awful.layout.suit.fair,
     awful.layout.suit.fair.horizontal,
     awful.layout.suit.spiral,
     awful.layout.suit.spiral.dwindle,
     awful.layout.suit.max,
-    awful.layout.suit.max.fullscreen,
-    awful.layout.suit.magnifier
 }
 -- }}}
 
@@ -70,7 +67,7 @@ end
 -- {{{ Menu
 -- Create a laucher widget and a main menu
 myawesomemenu = {
-   { "manual", terminal .. " -e man awesome" },
+   { "man page", terminal .. " -e man awesome" },
    { "edit config", editor_cmd .. " " .. awful.util.getdir("config") .. "/rc.lua" },
    { "restart", awesome.restart },
    { "quit", awesome.quit }
@@ -89,6 +86,10 @@ mylauncher = awful.widget.launcher({ image = image(beautiful.awesome_icon),
 -- {{{ Wibox
 -- Create a textclock widget
 mytextclock = awful.widget.textclock({ align = "right" })
+
+-- A simple separator
+separator = widget({ type = "textbox" })
+separator.text  = " :: "
 
 -- Create a systray
 mysystray = widget({ type = "systray" })
@@ -150,7 +151,7 @@ for s = 1, screen.count() do
                                           end, mytasklist.buttons)
 
     -- Create the wibox
-    mywibox[s] = awful.wibox({ position = "top", screen = s })
+    mywibox[s] = awful.wibox({ position = "bottom", screen = s })
     -- Add widgets to the wibox - order matters
     mywibox[s].widgets = {
         {
@@ -160,8 +161,11 @@ for s = 1, screen.count() do
         },
         mylayoutbox[s],
         mytextclock,
-        s == 1 and mysystray or nil,
+        separator,
+        s == 1 and mysystray or nil, -- systray on screen 1 only
+        s == 1 and separator or nil, -- systray on screen 1 only
         mytasklist[s],
+        separator,
         layout = awful.widget.layout.horizontal.rightleft
     }
 end
@@ -236,7 +240,9 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey }, "`",
               function ()
                   teardrop(terminal, "top", "middle", .8, .4, true, 1)
-              end)
+              end),
+
+    awful.key({ modkey }, "BackSpace", function () awful.util.spawn(lockscreen) end)
 )
 
 clientkeys = awful.util.table.join(
