@@ -13,6 +13,16 @@ require("debian.menu")
 -- Teardrop terminal
 require("lib/teardrop")
 
+-- Popup command prompt
+require("obvious.popup_run_prompt")
+obvious.popup_run_prompt.set_opacity( 0.7 )
+obvious.popup_run_prompt.set_prompt_string( "$> " )
+obvious.popup_run_prompt.set_slide( true )
+obvious.popup_run_prompt.set_width( 0.5 )
+obvious.popup_run_prompt.set_height( 18 )
+obvious.popup_run_prompt.set_border_width( 1 )
+--obvious.popup_run_prompt.completion_function( awful.completion.shell )
+
 -- {{{ Variable definitions
 -- Themes define colours, icons, and wallpapers
 --beautiful.init("/usr/share/awesome/themes/zenburn/theme.lua")
@@ -123,8 +133,6 @@ mytasklist.buttons = awful.util.table.join(
                                           end))
 
 for s = 1, screen.count() do
-    -- Create a promptbox for each screen
-    mypromptbox[s] = awful.widget.prompt({ layout = awful.widget.layout.horizontal.leftright })
     -- Create an imagebox widget which will contains an icon indicating which layout we're using.
     -- We need one layoutbox per screen.
     mylayoutbox[s] = awful.widget.layoutbox(s)
@@ -148,7 +156,6 @@ for s = 1, screen.count() do
         {
             mylauncher,
             mytaglist[s],
-            mypromptbox[s],
             layout = awful.widget.layout.horizontal.leftright
         },
         mylayoutbox[s],
@@ -215,7 +222,7 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(layouts, -1) end),
 
     -- Prompt
-    awful.key({ modkey },            "r",     function () mypromptbox[mouse.screen]:run() end),
+    awful.key({ modkey },            "r",     obvious.popup_run_prompt.run_prompt),
 
     awful.key({ modkey }, "x",
               function ()
