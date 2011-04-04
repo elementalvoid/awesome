@@ -4,8 +4,10 @@ require("awful.autofocus")
 require("awful.rules")
 -- Theme handling library
 require("beautiful")
+
 -- Notification library
 require("naughty")
+naughty.config.default_preset.position = "bottom_right"
 
 -- Load Debian menu entries
 require("debian.menu")
