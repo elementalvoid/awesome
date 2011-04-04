@@ -26,7 +26,9 @@ obvious.popup_run_prompt.set_slide( true )
 obvious.popup_run_prompt.set_width( 0.5 )
 obvious.popup_run_prompt.set_height( 18 )
 obvious.popup_run_prompt.set_border_width( 1 )
---obvious.popup_run_prompt.completion_function( awful.completion.shell )
+
+require("obvious.net")
+require("obvious.cpu")
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, and wallpapers
@@ -34,10 +36,22 @@ obvious.popup_run_prompt.set_border_width( 1 )
 beautiful.init("/home/mklich/.config/awesome/themes/default/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
-terminal = "rxvt"
-editor = os.getenv("EDITOR") or "vim"
+terminal = "urxvt"
+editor = "urxvt -e vim"
 editor_cmd = terminal .. " -e " .. editor
 lockscreen = os.getenv("HOME") .. "/bin/lockscreen"
+
+-- Load and configure the clock
+require("obvious.clock")
+obvious.clock.set_editor(editor)
+obvious.clock.set_shortformat(function ()
+    local week = tonumber(os.date("%W"))
+    return obvious.lib.markup.fg.color("#009000", "⚙ ") .. "%I:%M %a %m/%d "
+end)
+obvious.clock.set_longformat(function ()
+    local week = tonumber(os.date("%W"))
+    return obvious.lib.markup.fg.color("#009000", "⚙ ") .. "%I:%M %a %m/%d "
+end)
 
 -- Default modkey.
 -- Usually, Mod4 is the key with a logo between Control and Alt.
@@ -89,8 +103,6 @@ mylauncher = awful.widget.launcher({ image = image(beautiful.awesome_icon),
 -- }}}
 
 -- {{{ Wibox
--- Create a textclock widget
-mytextclock = awful.widget.textclock({ align = "right" })
 
 -- A simple separator
 separator = widget({ type = "textbox" })
@@ -162,10 +174,20 @@ for s = 1, screen.count() do
         {
             mylauncher,
             mytaglist[s],
+            obvious.cpu()
+              :set_type( "graph" )
+              :set_color( "#ffddaa" )
+              :set_background_color( "#000000" )
+              :set_width( 15 ),
+            --obvious.net("eth0")
+            --  :set_type("graph")
+            --  :set_vertical(false)
+            --  :set_width(25),
+            separator,
             layout = awful.widget.layout.horizontal.leftright
         },
         mylayoutbox[s],
-        mytextclock,
+        obvious.clock(),
         separator,
         s == 1 and mysystray or nil, -- systray on screen 1 only
         s == 1 and separator or nil, -- systray on screen 1 only
