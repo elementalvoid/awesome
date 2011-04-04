@@ -363,14 +363,25 @@ awful.rules.rules = {
     -- Chrome alwas on tag 1 of screen 2
     {rule = { class = "google-chrome" },
       properties = { tag = tags[2][1] } },
+    -- Chrome preferences should float
+    {rule = { name = "Google Chrome Preferences" },
+      properties = { floating = true } },
 
     -- Icedove alwas on tag 2 of screen 2
     {rule = { class = "Icedove" },
       properties = { tag = tags[2][2] } },
 
-    -- Set Firefox to always map on tags number 2 of screen 1.
-    -- { rule = { class = "Firefox" },
-    --   properties = { tag = tags[1][2] } },
+    -- ReadyTalk Conference Controls
+    {rule = { class = "Conference Controls" },
+      properties = { floating = true } },
+
+    -- Meld should always be full screen
+    {rule = { class = "Meld" },
+      properties = { floating = true, maximized_vertical = true, maximized_horizontal = true } },
+
+    -- ECUxPlot
+    {rule = { class = "ECUxPlot" },
+      properties = { floating = true } },
 }
 -- }}}
 
