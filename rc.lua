@@ -15,6 +15,9 @@ require("debian.menu")
 -- Teardrop terminal
 require("lib/teardrop")
 
+-- run_once function - place calles at the bottom of rc..
+require("lib/run_once")
+
 -- Popup command prompt
 require("obvious.popup_run_prompt")
 obvious.popup_run_prompt.set_opacity( 0.7 )
@@ -375,3 +378,14 @@ end)
 client.add_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.add_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
+
+
+-- Run these apps once
+-- run_once ("",nil,nil)
+run_once ("pidgin",nil,nil)
+run_once ("gnome-volume-control-applet",nil,nil)
+run_once ("parcellite",nil,nil)
+run_once ("numlockx -on",nil,nil)
+-- run_once ("google-chrome",nil,nil)
+run_once ("icedove",nil,nil)
+
