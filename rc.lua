@@ -32,8 +32,8 @@ require("obvious.cpu")
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, and wallpapers
---beautiful.init("/usr/share/awesome/themes/zenburn/theme.lua")
-beautiful.init("/home/mklich/.config/awesome/themes/default/theme.lua")
+beautiful.init("/home/mklich/.config/awesome/themes/solarized/solarized/theme.lua")
+--beautiful.init("/home/mklich/.config/awesome/themes/default/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 terminal = "urxvt"
@@ -342,6 +342,7 @@ root.keys(globalkeys)
 
 -- {{{ Rules
 awful.rules.rules = {
+  -- Use xwininfo to get the properties for windows
     -- All clients will match this rule.
     { rule = { },
       properties = { border_width = beautiful.border_width,
@@ -381,6 +382,10 @@ awful.rules.rules = {
 
     -- ECUxPlot
     {rule = { class = "ECUxPlot" },
+      properties = { floating = true } },
+
+    -- GitG
+    {rule = { class = "gitg" },
       properties = { floating = true } },
 }
 -- }}}
