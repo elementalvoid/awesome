@@ -368,8 +368,10 @@ awful.rules.rules = {
     {rule = { name = "Google Chrome Preferences" },
       properties = { floating = true } },
 
-    -- Icedove alwas on tag 2 of screen 2
+    -- Icedove/Thunderbird always on tag 2 of screen 2
     {rule = { class = "Icedove" },
+      properties = { tag = tags[2][2] } },
+    {rule = { class = "Thunderbird" },
       properties = { tag = tags[2][2] } },
 
     -- ReadyTalk Conference Controls
@@ -429,5 +431,6 @@ run_once ("gnome-volume-control-applet",nil,nil)
 run_once ("parcellite",nil,nil)
 run_once ("numlockx -on",nil,nil)
 -- run_once ("google-chrome",nil,nil)
-run_once ("icedove",nil,nil)
+--run_once ("icedove",nil,nil)
+run_once ("/home/mklich/bin/thunderbird",nil,nil)
 
