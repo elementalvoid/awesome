@@ -27,8 +27,8 @@ obvious.popup_run_prompt.set_width( 0.5 )
 obvious.popup_run_prompt.set_height( 18 )
 obvious.popup_run_prompt.set_border_width( 1 )
 
-require("obvious.net")
-require("obvious.cpu")
+-- Vicious Widgets
+require("vicious")
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, and wallpapers
@@ -112,6 +112,16 @@ mylauncher = awful.widget.launcher({ image = image(beautiful.awesome_icon),
 separator = widget({ type = "textbox" })
 separator.text  = " :: "
 
+-- Sound volume
+volumewidget = widget ({ type = "textbox" })
+vicious.register( volumewidget, vicious.widgets.volume, " $2 $1% ", 4, "Master" )
+volumewidget:buttons(awful.util.table.join(
+    awful.button({ }, 1, function () awful.util.spawn("amixer -q sset Master toggle", false) end),
+    awful.button({ }, 2, function () awful.util.spawn("urxvt -e alsamixer", true) end),
+    awful.button({ }, 4, function () awful.util.spawn("amixer -q sset Master 1dB+", false) end),
+    awful.button({ }, 5, function () awful.util.spawn("amixer -q sset Master 1dB-", false) end)
+))
+
 -- Create a systray
 mysystray = widget({ type = "systray" })
 
@@ -178,21 +188,11 @@ for s = 1, screen.count() do
         {
             mylauncher,
             mytaglist[s],
-            obvious.cpu()
-              :set_type( "graph" )
-              :set_color( "#ffddaa" )
-              :set_background_color( "#000000" )
-              :set_width( 15 ),
-            --obvious.net("eth0")
-            --  :set_type("graph")
-            --  :set_vertical(false)
-            --  :set_width(25),
-            separator,
             layout = awful.widget.layout.horizontal.leftright
         },
         mylayoutbox[s],
         obvious.clock(),
-        separator,
+        volumewidget,
         s == 1 and mysystray or nil, -- systray on screen 1 only
         s == 1 and separator or nil, -- systray on screen 1 only
         mytasklist[s],
