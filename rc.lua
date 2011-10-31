@@ -31,9 +31,11 @@ obvious.popup_run_prompt.set_border_width( 1 )
 require("vicious")
 
 -- {{{ Variable definitions
+awesome_config = awful.util.getdir("config")
+
 -- Themes define colours, icons, and wallpapers
-beautiful.init("/home/mklich/.config/awesome/themes/solarized/solarized/theme.lua")
---beautiful.init("/home/mklich/.config/awesome/themes/default/theme.lua")
+beautiful.init(awesome_config .. "/themes/solarized/solarized/theme.lua")
+--beautiful.init(awesome_config .. "/themes/default/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 terminal = "urxvt"
@@ -101,6 +103,8 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
                                     { "open terminal", terminal }
                                   }
                         })
+
+conky_bar = awful.wibox({ position = "bottom", screen = 1, ontop = false, width = 1, height = 48 })
 
 mylauncher = awful.widget.launcher({ image = image(beautiful.awesome_icon),
                                      menu = mymainmenu })
@@ -427,10 +431,14 @@ client.add_signal("unfocus", function(c) c.border_color = beautiful.border_norma
 -- Run these apps once
 -- run_once ("",nil,nil)
 run_once ("pidgin",nil,nil)
-run_once ("gnome-volume-control-applet",nil,nil)
 run_once ("parcellite",nil,nil)
 run_once ("numlockx -on",nil,nil)
--- run_once ("google-chrome",nil,nil)
---run_once ("icedove",nil,nil)
-run_once ("/home/mklich/bin/thunderbird",nil,nil)
-
+--run_once ("google-chrome",nil,nil)
+run_once (os.getenv("HOME") .. "/bin/thunderbird",nil,nil)
+run_once ("conky", "-c ~/.config/conky/cpu",nil)
+run_once ("conky", "-c ~/.config/conky/mem",nil)
+run_once ("conky", "-c ~/.config/conky/net",nil)
+run_once ("conky", "-c ~/.config/conky/disk",nil)
+run_once ("conky", "-c ~/.config/conky/disk2",nil)
+run_once ("conky", "-c ~/.config/conky/io",nil)
+run_once ("conky", "-c ~/.config/conky/pianobar",nil)
