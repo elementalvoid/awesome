@@ -393,6 +393,12 @@ awful.rules.rules = {
     -- GitG
     {rule = { class = "gitg" },
       properties = { floating = true } },
+
+    {rule = { class = "rdesktop" },
+      properties = {floating = true } },
+
+    {rule = { class = "vncviewer" },
+      properties = {floating = true } },
 }
 -- }}}
 
