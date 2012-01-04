@@ -433,6 +433,11 @@ client.add_signal("focus", function(c) c.border_color = beautiful.border_focus e
 client.add_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
 
+-- xsetroot every 10 seconds
+mytimer = timer({ timeout = 10 })
+mytimer:add_signal("timeout", function() awful.util.spawn_with_shell("xsetroot -cursor_name left_ptr") end)
+mytimer:start()
+awful.util.spawn_with_shell("xsetroot -cursor_name left_ptr")
 
 -- Run these apps once
 -- run_once ("",nil,nil)
