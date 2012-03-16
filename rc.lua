@@ -308,6 +308,7 @@ end
 for i = 1, keynumber do
     globalkeys = awful.util.table.join(globalkeys,
         awful.key({ modkey }, "#" .. i + 9,
+                  -- switch to the given screen
                   function ()
                         local screen = mouse.screen
                         if tags[screen][i] then
@@ -315,6 +316,7 @@ for i = 1, keynumber do
                         end
                   end),
         awful.key({ modkey, "Control" }, "#" .. i + 9,
+                  -- "join" two screens without moving windows
                   function ()
                       local screen = mouse.screen
                       if tags[screen][i] then
@@ -322,12 +324,14 @@ for i = 1, keynumber do
                       end
                   end),
         awful.key({ modkey, "Shift" }, "#" .. i + 9,
+                  -- move current window to given screen
                   function ()
                       if client.focus and tags[client.focus.screen][i] then
                           awful.client.movetotag(tags[client.focus.screen][i])
                       end
                   end),
         awful.key({ modkey, "Control", "Shift" }, "#" .. i + 9,
+                  -- display current window on current screen *and* given screen
                   function ()
                       if client.focus and tags[client.focus.screen][i] then
                           awful.client.toggletag(tags[client.focus.screen][i])
