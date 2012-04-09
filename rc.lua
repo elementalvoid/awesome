@@ -329,6 +329,10 @@ for i = 1, keynumber do
                       if client.focus and tags[client.focus.screen][i] then
                           awful.client.movetotag(tags[client.focus.screen][i])
                       end
+                      local screen = mouse.screen
+                      if tags[screen][i] then
+                          awful.tag.viewonly(tags[screen][i])
+                      end
                   end),
         awful.key({ modkey, "Control", "Shift" }, "#" .. i + 9,
                   -- display current window on current screen *and* given screen
