@@ -41,7 +41,7 @@ beautiful.init(awesome_config .. "/themes/solarized/solarized/theme.lua")
 terminal = "urxvt"
 editor = "urxvt -e vim"
 editor_cmd = terminal .. " -e " .. editor
-lockscreen = os.getenv("HOME") .. "/bin/lockscreen"
+lockscreen = "xscreensaver-command -lock"
 
 -- Load and configure the clock
 require("obvious.clock")
@@ -449,6 +449,7 @@ awful.util.spawn_with_shell("xsetroot -cursor_name left_ptr")
 
 -- Run these apps once
 -- run_once ("",nil,nil)
+run_once ("xscreensaver",nil,nil)
 run_once ("pidgin",nil,nil)
 run_once ("parcellite",nil,nil)
 run_once ("numlockx -on",nil,nil)
