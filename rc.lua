@@ -474,7 +474,7 @@ awful.util.spawn_with_shell("xsetroot -cursor_name left_ptr")
 
 -- Run these apps once
 run_once ("xscreensaver")
-run_once ("pidgin")
+run_once ("pidgin -f")
 run_once ("parcellite")
 --run_once ("google-chrome",nil,nil)
 run_once ("thunderbird")
