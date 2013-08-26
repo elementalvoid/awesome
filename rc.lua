@@ -1,4 +1,4 @@
--- Standard awesome library
+-- Standard amesome library
 require("awful")
 require("awful.autofocus")
 require("awful.rules")
@@ -21,7 +21,7 @@ require("lib/run_once")
 -- Popup command prompt
 require("obvious.popup_run_prompt")
 obvious.popup_run_prompt.set_opacity( 0.7 )
-obvious.popup_run_prompt.set_prompt_string( "$> " )
+obvious.popup_run_prompt.set_prompt_string( " $> " )
 obvious.popup_run_prompt.set_slide( true )
 obvious.popup_run_prompt.set_width( 0.5 )
 obvious.popup_run_prompt.set_height( 18 )
@@ -63,7 +63,7 @@ beautiful.init(awesome_config .. "/themes/solarized/solarized/theme.lua")
 --beautiful.init(awesome_config .. "/themes/default/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
-terminal = "urxvt"
+terminal = "terminator"
 editor = "urxvt -e vim"
 editor_cmd = terminal .. " -e " .. editor
 lockscreen = "xscreensaver-command -lock"
@@ -233,7 +233,6 @@ end
 
 -- {{{ Mouse bindings
 root.buttons(awful.util.table.join(
-    awful.button({ }, 3, function () mymainmenu:toggle() end),
     awful.button({ }, 4, awful.tag.viewnext),
     awful.button({ }, 5, awful.tag.viewprev)
 ))
@@ -241,7 +240,7 @@ root.buttons(awful.util.table.join(
 
 -- {{{ Key bindings
 globalkeys = awful.util.table.join(
-    awful.key({ modkey, "Mod1"    }, "j",   awful.tag.viewprev       ),
+    awful.key({ modkey, "Mod1"    }, "j",  awful.tag.viewprev       ),
     awful.key({ modkey, "Mod1"    }, "k",  awful.tag.viewnext       ),
     awful.key({ modkey,           }, "Escape", awful.tag.history.restore),
 
@@ -288,13 +287,14 @@ globalkeys = awful.util.table.join(
     -- Prompt
     awful.key({ modkey },            "r",     obvious.popup_run_prompt.run_prompt),
 
-    awful.key({ modkey }, "x",
-              function ()
-                  awful.prompt.run({ prompt = "Run Lua code: " },
-                  mypromptbox[mouse.screen].widget,
-                  awful.util.eval, nil,
-                  awful.util.getdir("cache") .. "/history_eval")
-              end),
+    -- Not using awful.prompt so this doesn't work
+    -- awful.key({ modkey }, "x",
+    --           function ()
+    --               awful.prompt.run({ prompt = "Run Lua code: " },
+    --               mypromptbox[mouse.screen].widget,
+    --               awful.util.eval, nil,
+    --               awful.util.getdir("cache") .. "/history_eval")
+    --           end),
 
     -- teardrop
     awful.key({ modkey }, "`",
@@ -399,11 +399,17 @@ awful.rules.rules = {
       properties = { tag = tags[1][2] } },
 
     -- Chrome alwas on tag 1 of screen 2
-    {rule = { class = "google-chrome" },
+    {rule = { class = "Google-chrome" },
       properties = { tag = tags[2][1] } },
-    -- Chrome preferences should float
-    {rule = { name = "Google Chrome Preferences" },
-      properties = { floating = true } },
+
+    -- Conky on all screen1 tags
+    {rule = { class = "Conky" },
+      callback = function(c)
+        c:tags({tags[1][1],
+                tags[1][2],
+                tags[1][3],
+                tags[1][4]})
+      end },
 
     -- Icedove/Thunderbird always on tag 2 of screen 2
     {rule = { class = "Icedove" },
@@ -476,7 +482,7 @@ awful.util.spawn_with_shell("xsetroot -cursor_name left_ptr")
 run_once ("xscreensaver")
 run_once ("pidgin -f")
 run_once ("parcellite")
---run_once ("google-chrome",nil,nil)
+run_once ("google-chrome",nil,nil)
 run_once ("thunderbird")
 run_once ("conky -c ~/.config/conky/cpu")
 run_once ("conky -c ~/.config/conky/mem")
@@ -484,4 +490,4 @@ run_once ("conky -c ~/.config/conky/net")
 run_once ("conky -c ~/.config/conky/disk")
 run_once ("conky -c ~/.config/conky/disk2")
 run_once ("conky -c ~/.config/conky/io")
-run_once ("conky -c ~/.config/conky/pianobar")
+--run_once ("conky -c ~/.config/conky/pianobar")
