@@ -8,7 +8,7 @@
 
 -- {{{ Main
 theme = {}
-theme.wallpaper_cmd = { "awsetbg" .. awesome_config .. "/themes/wallpapers/57023-green-3200x1200.jpg" }
+--theme.wallpaper_cmd = { "awsetbg" .. awesome_config .. "/themes/wallpapers/57023-green-3200x1200.jpg" }
 theme.colors = {}
 theme.colors.base3   = "#002b36"
 theme.colors.base2   = "#073642"
