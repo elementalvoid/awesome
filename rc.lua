@@ -2,12 +2,12 @@
 require("awful")
 require("awful.autofocus")
 require("awful.rules")
+
 -- Theme handling library
 require("beautiful")
 
 -- Notification library
 require("naughty")
-naughty.config.default_preset.position = "bottom_right"
 
 -- Load Debian menu entries
 require("debian.menu")
@@ -18,8 +18,51 @@ require("lib/teardrop")
 -- run_once function - place calles at the bottom of rc..
 require("lib/run_once")
 
--- Popup command prompt
+-- Obvious widgets
 require("obvious.popup_run_prompt")
+require("obvious.battery")
+require("obvious.clock")
+
+-- Vicious Widgets
+require("vicious")
+
+-- {{{ Variable definitions
+awesome_config = awful.util.getdir("config")
+
+-- This is used later as the default terminal and editor to run.
+terminal = "terminator -b"
+editor = "urxvt -e vim"
+editor_cmd = terminal .. " -e " .. editor
+lockscreen = "xscreensaver-command -lock"
+
+-- Default modkey.
+-- Usually, Mod4 is the key with a logo between Control and Alt.
+-- If you do not like this or do not have such a key,
+-- I suggest you to remap Mod4 to another key using xmodmap or other tools.
+-- However, you can use another modifier like Mod1, but it may interact with others.
+modkey = "Mod4"
+
+-- Table of layouts to cover with awful.layout.inc, order matters.
+layouts =
+{
+    awful.layout.suit.floating,
+    awful.layout.suit.tile,
+    awful.layout.suit.tile.bottom,
+    awful.layout.suit.fair,
+    awful.layout.suit.fair.horizontal,
+    awful.layout.suit.spiral,
+    awful.layout.suit.spiral.dwindle,
+    awful.layout.suit.max,
+}
+-- }}}
+
+-- Set the theme
+beautiful.init(awesome_config .. "/themes/solarized/solarized/theme.lua")
+
+-- Configure notifications
+naughty.config.default_preset.position = "bottom_right"
+
+-- Configure the popup command prompt
 obvious.popup_run_prompt.set_opacity( 0.7 )
 obvious.popup_run_prompt.set_prompt_string( " $> " )
 obvious.popup_run_prompt.set_slide( true )
@@ -27,9 +70,17 @@ obvious.popup_run_prompt.set_width( 0.5 )
 obvious.popup_run_prompt.set_height( 18 )
 obvious.popup_run_prompt.set_border_width( 1 )
 
--- Vicious Widgets
-require("vicious")
---
+-- Configure the clock
+obvious.clock.set_editor(editor)
+obvious.clock.set_shortformat(function ()
+    local week = tonumber(os.date("%W"))
+    return obvious.lib.markup.fg.color("#009000", " ⚙ ") .. "%I:%M %a %m/%d "
+end)
+obvious.clock.set_longformat(function ()
+    local week = tonumber(os.date("%W"))
+    return obvious.lib.markup.fg.color("#009000", " ⚙ ") .. "%I:%M %a %m/%d "
+end)
+
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
 -- another config (This code will only ever execute for the fallback config)
@@ -55,51 +106,6 @@ do
 end
 -- }}}
 
--- {{{ Variable definitions
-awesome_config = awful.util.getdir("config")
-
--- Themes define colours, icons, and wallpapers
-beautiful.init(awesome_config .. "/themes/solarized/solarized/theme.lua")
---beautiful.init(awesome_config .. "/themes/default/theme.lua")
-
--- This is used later as the default terminal and editor to run.
-terminal = "terminator"
-editor = "urxvt -e vim"
-editor_cmd = terminal .. " -e " .. editor
-lockscreen = "xscreensaver-command -lock"
-
--- Load and configure the clock
-require("obvious.clock")
-obvious.clock.set_editor(editor)
-obvious.clock.set_shortformat(function ()
-    local week = tonumber(os.date("%W"))
-    return obvious.lib.markup.fg.color("#009000", "⚙ ") .. "%I:%M %a %m/%d "
-end)
-obvious.clock.set_longformat(function ()
-    local week = tonumber(os.date("%W"))
-    return obvious.lib.markup.fg.color("#009000", "⚙ ") .. "%I:%M %a %m/%d "
-end)
-
--- Default modkey.
--- Usually, Mod4 is the key with a logo between Control and Alt.
--- If you do not like this or do not have such a key,
--- I suggest you to remap Mod4 to another key using xmodmap or other tools.
--- However, you can use another modifier like Mod1, but it may interact with others.
-modkey = "Mod4"
-
--- Table of layouts to cover with awful.layout.inc, order matters.
-layouts =
-{
-    awful.layout.suit.floating,
-    awful.layout.suit.tile,
-    awful.layout.suit.tile.bottom,
-    awful.layout.suit.fair,
-    awful.layout.suit.fair.horizontal,
-    awful.layout.suit.spiral,
-    awful.layout.suit.spiral.dwindle,
-    awful.layout.suit.max,
-}
--- }}}
 
 -- {{{ Tags
 -- Define a tag table which hold all screen tags.
@@ -156,7 +162,6 @@ mysystray = widget({ type = "systray" })
 
 -- Create a wibox for each screen and add it
 mywibox = {}
-mypromptbox = {}
 mylayoutbox = {}
 mytaglist = {}
 mytaglist.buttons = awful.util.table.join(
@@ -286,15 +291,6 @@ globalkeys = awful.util.table.join(
 
     -- Prompt
     awful.key({ modkey },            "r",     obvious.popup_run_prompt.run_prompt),
-
-    -- Not using awful.prompt so this doesn't work
-    -- awful.key({ modkey }, "x",
-    --           function ()
-    --               awful.prompt.run({ prompt = "Run Lua code: " },
-    --               mypromptbox[mouse.screen].widget,
-    --               awful.util.eval, nil,
-    --               awful.util.getdir("cache") .. "/history_eval")
-    --           end),
 
     -- teardrop
     awful.key({ modkey }, "`",
@@ -480,9 +476,9 @@ awful.util.spawn_with_shell("xsetroot -cursor_name left_ptr")
 
 -- Run these apps once
 run_once ("xscreensaver")
-run_once ("pidgin -f")
+run_once ("pidgin", "pidgin -f")
 run_once ("parcellite")
-run_once ("google-chrome",nil,nil)
+run_once ("chrome", "google-chrome")
 run_once ("icedove")
 run_once ("conky -c ~/.config/conky/cpu")
 run_once ("conky -c ~/.config/conky/mem")
