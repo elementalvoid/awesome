@@ -418,9 +418,9 @@ awful.rules.rules = {
     { rule = { class = "Pidgin" },
       properties = { tag = tags[1][2] } },
 
-    -- Chrome alwas on tag 1 of screen 2
+    -- Chrome alwas on tag 1 of screen 4
     {rule = { class = "Google-chrome" },
-      properties = { tag = tags[2][1] } },
+      properties = { tag = tags[1][4] } },
 
     -- Conky on all screen1 tags
     {rule = { class = "Conky" },
@@ -433,9 +433,7 @@ awful.rules.rules = {
 
     -- Icedove/Thunderbird always on tag 2 of screen 2
     {rule = { class = "Icedove" },
-      properties = { tag = tags[2][2] } },
-    {rule = { class = "Thunderbird" },
-      properties = { tag = tags[2][2] } },
+      properties = { tag = tags[1][2] } },
 
     -- ReadyTalk Conference Controls
     {rule = { class = "Conference Controls" },
