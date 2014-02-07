@@ -1,0 +1,3 @@
+[submodule "pulseaudio-awesome"]
+	path = pulseaudio-awesome
+	url = https://github.com/orofarne/pulseaudio-awesome.git
