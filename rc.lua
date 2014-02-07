@@ -143,7 +143,7 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
                                   }
                         })
 
-conky_bar = awful.wibox({ position = "bottom", screen = 1, ontop = false, width = 1, height = 48 })
+--conky_bar = awful.wibox({ position = "bottom", screen = 1, ontop = false, width = 1, height = 48 })
 
 mylauncher = awful.widget.launcher({ image = image(beautiful.awesome_icon),
                                      menu = mymainmenu })
@@ -502,11 +502,3 @@ run_once ("xscreensaver")
 run_once ("pidgin", "pidgin -f")
 run_once ("parcellite")
 run_once ("chrome", "google-chrome")
-run_once ("icedove")
-run_once ("conky -c ~/.config/conky/cpu")
-run_once ("conky -c ~/.config/conky/mem")
-run_once ("conky -c ~/.config/conky/net")
-run_once ("conky -c ~/.config/conky/disk")
-run_once ("conky -c ~/.config/conky/disk2")
-run_once ("conky -c ~/.config/conky/io")
---run_once ("conky -c ~/.config/conky/pianobar")
