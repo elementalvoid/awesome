@@ -18,13 +18,13 @@ require("lib/teardrop")
 -- run_once function - place calles at the bottom of rc..
 require("lib/run_once")
 
+-- pulse audio from https://github.com/orofarne/pulseaudio-awesome
+require("pulseaudio-awesome/pulseaudio")
+
 -- Obvious widgets
 require("obvious.popup_run_prompt")
 require("obvious.battery")
 require("obvious.clock")
-
--- Vicious Widgets
-require("vicious")
 
 -- {{{ Variable definitions
 awesome_config = awful.util.getdir("config")
@@ -147,15 +147,17 @@ mylauncher = awful.widget.launcher({ image = image(beautiful.awesome_icon),
 separator = widget({ type = "textbox" })
 separator.text  = " :: "
 
--- Sound volume
-volumewidget = widget ({ type = "textbox" })
-vicious.register( volumewidget, vicious.widgets.volume, " $2 $1% ", 4, "Master" )
-volumewidget:buttons(awful.util.table.join(
-    awful.button({ }, 1, function () awful.util.spawn("amixer -q sset Master toggle", false) end),
-    awful.button({ }, 2, function () awful.util.spawn(terminal .. "-e alsamixer", true) end),
-    awful.button({ }, 4, function () awful.util.spawn("amixer -q sset Master 1dB+", false) end),
-    awful.button({ }, 5, function () awful.util.spawn("amixer -q sset Master 1dB-", false) end)
-))
+-- Configure the PulseAudio widget
+volumewidget = widget({
+    type = "textbox",
+    name = "volumewidget",
+    align = "right"
+})
+
+volumewidget.text = pulseaudio.volumeInfo()
+volumetimer = timer({ timeout = 30 })
+volumetimer:add_signal("timeout", function() volumewidget.text = pulseaudio.volumeInfo() end)
+volumetimer:start()
 
 -- Create a systray
 mysystray = widget({ type = "systray" })
@@ -298,7 +300,20 @@ globalkeys = awful.util.table.join(
                   teardrop(terminal, "top", "middle", .8, .4, true, 1)
               end),
 
-    awful.key({ modkey }, "BackSpace", function () awful.util.spawn(lockscreen) end)
+    awful.key({ modkey }, "BackSpace", function () awful.util.spawn(lockscreen) end),
+
+    -- media keys
+    --awful.key({ }, "XF86MonBrightnessUp",   brightness.increase),
+    --awful.key({ }, "XF86MonBrightnessDown", brightness.decrease),
+    --awful.key({ }, "XF86AudioRaiseVolume", volume.increase),
+    --awful.key({ }, "XF86AudioLowerVolume", volume.decrease),
+    --awful.key({ }, "XF86AudioMute",        volume.toggle),
+    awful.key({}, "XF86AudioMute",
+      function() pulseaudio.volumeMute(); volumewidget.text = pulseaudio.volumeInfo() end),
+    awful.key({}, "XF86AudioLowerVolume",
+      function() pulseaudio.volumeDown(); volumewidget.text = pulseaudio.volumeInfo() end),
+    awful.key({}, "XF86AudioRaiseVolume",
+      function() pulseaudio.volumeUp(); volumewidget.text = pulseaudio.volumeInfo() end)
 )
 
 clientkeys = awful.util.table.join(
