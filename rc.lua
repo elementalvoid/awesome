@@ -236,6 +236,7 @@ for s = 1, screen.count() do
         },
         mylayoutbox[s],
         obvious.clock(),
+        obvious.battery(),
         volumewidget,
         s == 1 and mysystray or nil, -- systray on screen 1 only
         s == 1 and separator or nil, -- systray on screen 1 only
@@ -501,4 +502,5 @@ awful.util.spawn_with_shell("xsetroot -cursor_name left_ptr")
 run_once ("xscreensaver")
 run_once ("pidgin", "pidgin -f")
 run_once ("parcellite")
+run_once ("nm-applet")
 run_once ("chrome", "google-chrome")
