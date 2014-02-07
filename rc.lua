@@ -63,12 +63,20 @@ beautiful.init(awesome_config .. "/themes/solarized/solarized/theme.lua")
 naughty.config.default_preset.position = "bottom_right"
 
 -- Configure the popup command prompt
+--- Spawn a program using a login shell -- for custom PATH support
+function spawn_with_login_shell(cmd, screen)
+    if cmd and cmd ~= "" then
+        cmd = "/bin/bash -l -c \"" .. cmd .. "\""
+        return awesome.spawn(cmd, false, screen or mouse.screen)
+    end
+end
 obvious.popup_run_prompt.set_opacity( 0.7 )
 obvious.popup_run_prompt.set_prompt_string( " $> " )
 obvious.popup_run_prompt.set_slide( true )
 obvious.popup_run_prompt.set_width( 0.5 )
 obvious.popup_run_prompt.set_height( 18 )
 obvious.popup_run_prompt.set_border_width( 1 )
+obvious.popup_run_prompt.set_run_function( spawn_with_login_shell )
 
 -- Configure the clock
 obvious.clock.set_editor(editor)
