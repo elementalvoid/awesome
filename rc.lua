@@ -162,6 +162,11 @@ volumewidget = widget({
     align = "right"
 })
 
+volumewidget:buttons(awful.util.table.join(
+  awful.button({ }, 4, function() pulseaudio.volumeUp(); volumewidget.text = pulseaudio.volumeInfo() end),
+  awful.button({ }, 5, function() pulseaudio.volumeDown(); volumewidget.text = pulseaudio.volumeInfo() end)
+))
+
 volumewidget.text = pulseaudio.volumeInfo()
 volumetimer = timer({ timeout = 30 })
 volumetimer:add_signal("timeout", function() volumewidget.text = pulseaudio.volumeInfo() end)
