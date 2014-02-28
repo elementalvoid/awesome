@@ -426,6 +426,9 @@ awful.rules.rules = {
     -- Chrome alwas on tag 1 of screen 4
     {rule = { class = "Google-chrome" },
       properties = { tag = tags[1][4] } },
+    -- Chrome popups should float
+    {rule = { class = "Google-chrome", role = "pop-up" },
+      properties = { floating = true } },
 
     -- Conky on all screen1 tags
     {rule = { class = "Conky" },
