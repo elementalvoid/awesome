@@ -343,7 +343,15 @@ clientkeys = awful.util.table.join(
         function (c)
             c.maximized_horizontal = not c.maximized_horizontal
             c.maximized_vertical   = not c.maximized_vertical
-        end)
+        end),
+    awful.key({ }, "XF86MonBrightnessDown",
+      function ()
+        awful.util.spawn("xbacklight -time 0 -steps 1 -dec 20")
+      end),
+    awful.key({ }, "XF86MonBrightnessUp",
+      function ()
+        awful.util.spawn("xbacklight -time 0 -steps 1 -inc 20")
+      end)
 )
 
 -- Compute the maximum number of digit we need, limited to 9
