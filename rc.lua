@@ -15,7 +15,7 @@ require("debian.menu")
 -- Teardrop terminal
 require("lib/teardrop")
 
--- run_once function - place calles at the bottom of rc..
+-- run_once function - place calls at the bottom of rc..
 require("lib/run_once")
 
 -- pulse audio from https://github.com/orofarne/pulseaudio-awesome
@@ -82,11 +82,11 @@ obvious.popup_run_prompt.set_run_function( spawn_with_login_shell )
 obvious.clock.set_editor(editor)
 obvious.clock.set_shortformat(function ()
     local week = tonumber(os.date("%W"))
-    return obvious.lib.markup.fg.color("#009000", " ⚙ ") .. "%I:%M %a %m/%d "
+    return "%H:%M %a %m/%d "
 end)
 obvious.clock.set_longformat(function ()
     local week = tonumber(os.date("%W"))
-    return obvious.lib.markup.fg.color("#009000", " ⚙ ") .. "%I:%M %a %m/%d "
+    return "%H:%M %a %m/%d "
 end)
 
 -- {{{ Error handling
@@ -143,8 +143,6 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
                                   }
                         })
 
---conky_bar = awful.wibox({ position = "bottom", screen = 1, ontop = false, width = 1, height = 48 })
-
 mylauncher = awful.widget.launcher({ image = image(beautiful.awesome_icon),
                                      menu = mymainmenu })
 -- }}}
@@ -154,6 +152,10 @@ mylauncher = awful.widget.launcher({ image = image(beautiful.awesome_icon),
 -- A simple separator
 separator = widget({ type = "textbox" })
 separator.text  = " :: "
+space_separator = widget({ type = "textbox" })
+space_separator.text = " "
+gear_separator = widget({ type = "textbox" })
+gear_separator.text = obvious.lib.markup.fg.color("#009000", " ⚙ ")
 
 -- Configure the PulseAudio widget
 volumewidget = widget({
@@ -241,10 +243,13 @@ for s = 1, screen.count() do
         },
         mylayoutbox[s],
         obvious.clock(),
-        obvious.battery(),
+        gear_separator,
         volumewidget,
+        space_separator,
+        obvious.battery(),
+        separator,
         s == 1 and mysystray or nil, -- systray on screen 1 only
-        s == 1 and separator or nil, -- systray on screen 1 only
+        --s == 1 and separator or nil, -- systray on screen 1 only
         mytasklist[s],
         separator,
         layout = awful.widget.layout.horizontal.rightleft
@@ -438,15 +443,6 @@ awful.rules.rules = {
     {rule = { class = "Google-chrome", role = "pop-up" },
       properties = { floating = true } },
 
-    -- Conky on all screen1 tags
-    {rule = { class = "Conky" },
-      callback = function(c)
-        c:tags({tags[1][1],
-                tags[1][2],
-                tags[1][3],
-                tags[1][4]})
-      end },
-
     -- Icedove/Thunderbird always on tag 2 of screen 2
     {rule = { class = "Icedove" },
       properties = { tag = tags[1][2] } },
@@ -458,6 +454,10 @@ awful.rules.rules = {
     -- Meld should always be full screen
     {rule = { class = "Meld" },
       properties = { floating = true, maximized_vertical = true, maximized_horizontal = true } },
+
+    -- Cisco AnyConnect
+    {rule = { class = "Vpnui" },
+      properties = { floating = true } },
 
     -- ECUxPlot
     {rule = { class = "ECUxPlot" },
@@ -513,9 +513,9 @@ mytimer:start()
 awful.util.spawn_with_shell("xsetroot -cursor_name left_ptr")
 
 -- Run these apps once
+run_once ("gnome-keyring-daemon", "gnome-keyring-daemon --start --components=pkcs11")
 run_once ("xscreensaver")
 run_once ("pidgin", "pidgin -f")
 run_once ("parcellite")
 run_once ("nm-applet")
 run_once ("chrome", "google-chrome")
-run_once ("gnome-keyring-daemon", "gnome-keyring-daemon --start --components=pkcs11")
