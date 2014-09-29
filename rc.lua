@@ -475,6 +475,9 @@ awful.rules.rules = {
 
     {rule = { class = "vncviewer" },
       properties = {floating = true } },
+
+    {rule = { class = "hipchat" },
+      properties = { tag = tags[1][2], } },
 }
 -- }}}
 
