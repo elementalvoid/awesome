@@ -67,20 +67,6 @@ lockscreen = "xscreensaver-command -lock"
 -- However, you can use another modifier like Mod1, but it may interact with others.
 modkey = "Mod4"
 
--- Table of layouts to cover with awful.layout.inc, order matters.
-layouts =
-{
-    awful.layout.suit.floating,
-    awful.layout.suit.tile,
-    awful.layout.suit.tile.bottom,
-    awful.layout.suit.fair,
-    awful.layout.suit.fair.horizontal,
-    awful.layout.suit.spiral,
-    awful.layout.suit.spiral.dwindle,
-    awful.layout.suit.max,
-}
--- }}}
-
 -- Set the theme
 beautiful.init(awesome_config .. "/themes/solarized/solarized/theme.lua")
 
@@ -115,19 +101,34 @@ obvious.clock.set_longformat(function ()
 end)
 
 
+-- {{{ Define a tag table which hold all screen tags.
+-- Table of layouts to cover with awful.layout.inc, order matters.
+layouts =
+{
+    awful.layout.suit.floating,
+    awful.layout.suit.tile,
+    awful.layout.suit.tile.bottom,
+    awful.layout.suit.fair,
+    awful.layout.suit.fair.horizontal,
+    awful.layout.suit.spiral,
+    awful.layout.suit.spiral.dwindle,
+    awful.layout.suit.max,
+}
 
+tags = {
+  settings = {
+    { names  = { 1, 2, 3, 4 },
+      layout = { layouts[2], layouts[3], layouts[2], layouts[2] }
+    },
+    { names  = { 1, 2, 3, 4 },
+      layout = { layouts[2], layouts[2], layouts[2], layouts[2] }
+    }
+  }
+}
 
--- {{{ Tags
--- Define a tag table which hold all screen tags.
-tags = {}
 for s = 1, screen.count() do
-    -- Each screen has its own tag table.
-    tags[s] = awful.tag({ 1, 2, 3, 4}, s, awful.layout.suit.tile)
+    tags[s] = awful.tag(tags.settings[s].names, s, tags.settings[s].layout)
 end
---for s = 1, screen.count() do
---   -- Each screen has its own tag table.
---   tags[s] = awful.tag({ "⌨", "☠", "☕", "✍", "☻", "♬" }, s, awful.layout.suit.tile)
---end
 -- }}}
 
 -- {{{ Menu
