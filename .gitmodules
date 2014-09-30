@@ -1,3 +1,6 @@
 [submodule "pulseaudio-awesome"]
 	path = pulseaudio-awesome
 	url = https://github.com/orofarne/pulseaudio-awesome.git
+[submodule "obvious"]
+	path = obvious
+	url = ./obvious
