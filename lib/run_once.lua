@@ -1,4 +1,6 @@
 lfs = require("lfs")
+local awful = require("awful")
+
 -- {{{ Run programm once
 function processwalker()
    local function yieldprocess()
