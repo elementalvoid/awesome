@@ -332,7 +332,18 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(layouts, -1) end),
 
     -- Prompt
-    awful.key({ modkey },            "r",     function () mypromptbox[mouse.screen]:run() end),
+    --awful.key({ modkey }, "r", function () mypromptbox[mouse.screen]:run() end),
+    awful.key({ modkey }, "r",
+              function ()
+                  awful.prompt.run({ prompt = " Run: "},
+                      mypromptbox[mouse.screen].widget,
+                      function (...) spawn_with_login_shell(...) end,
+                      awful.completion.shell,
+                      awful.util.getdir("cache") .. "/history"
+                  )
+              end
+             ),
+
 
     -- teardrop
     awful.key({ modkey }, "`",
