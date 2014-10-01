@@ -29,7 +29,7 @@ local bashcomp_src = "/etc/bash_completion"
 -- @param src The bash completion source file, /etc/bash_completion by default.
 function completion.bashcomp_load(src)
     if src then bashcomp_src = src end
-    local c, err = io.popen("/usr/bin/env bash -c 'source " .. bashcomp_src .. "; complete -p'")
+    local c, err = io.popen("/usr/bin/env bash -l -c 'source " .. bashcomp_src .. "; complete -p'")
     if c then
         while true do
             local line = c:read("*line")
@@ -110,13 +110,13 @@ function completion.shell(command, cur_pos, ncomp, shell)
     else
         if bashcomp_funcs[words[1]] then
             -- fairly complex command with inline bash script to get the possible completions
-            shell_cmd = "/usr/bin/env bash -c 'source " .. bashcomp_src .. "; " ..
+            shell_cmd = "/usr/bin/env bash -l -c 'source " .. bashcomp_src .. "; " ..
             "__print_completions() { for ((i=0;i<${#COMPREPLY[*]};i++)); do echo ${COMPREPLY[i]}; done }; " ..
             "COMP_WORDS=(" ..  command .."); COMP_LINE=\"" .. command .. "\"; " ..
             "COMP_COUNT=" .. cur_pos ..  "; COMP_CWORD=" .. cword_index-1 .. "; " ..
             bashcomp_funcs[words[1]] .. "; __print_completions'"
         else
-            shell_cmd = "/usr/bin/env bash -c 'compgen -A " .. comptype .. " " .. words[cword_index] .. "'"
+            shell_cmd = "/usr/bin/env bash -l -c 'compgen -A " .. comptype .. " " .. words[cword_index] .. "'"
         end
     end
     local c, err = io.popen(shell_cmd .. " | sort -u")
