@@ -6,6 +6,9 @@ require("awful.autofocus")
 awful.widget = require("awful.widget")
 local wibox = require("wibox")
 
+-- Override awful.completion
+local completion = require("lib/completion")
+
 -- Theme handling library
 local beautiful = require("beautiful")
 
@@ -338,7 +341,7 @@ globalkeys = awful.util.table.join(
                   awful.prompt.run({ prompt = " Run: "},
                       mypromptbox[mouse.screen].widget,
                       function (...) spawn_with_login_shell(...) end,
-                      awful.completion.shell,
+                      completion.shell,
                       awful.util.getdir("cache") .. "/history"
                   )
               end
